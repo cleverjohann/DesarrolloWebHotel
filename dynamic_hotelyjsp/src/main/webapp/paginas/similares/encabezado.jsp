@@ -82,8 +82,10 @@
 					<li class="nav-item"><a href="index.jsp" class="nav-link">Inicio</a></li>
 					<li class="nav-item"><a href="nuestrosservicios.jsp"
 						class="nav-link">Servicios</a></li>
-					<li class="nav-item"><a href="agregarregistros.jsp"
+					<li class="nav-item"><a href="listarregistros.jsp"
 						class="nav-link">Registros</a></li>
+						<li class="nav-item"><a href="listarcuartos.jsp"
+						class="nav-link">Cuartos</a></li>
 					<li class="nav-item"><a href="ingresar.jsp" class="nav-link">Ingresar</a></li>
 				</ul>
 			</div>

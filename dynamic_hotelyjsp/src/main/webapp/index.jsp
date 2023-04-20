@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@page import="java.sql.Connection"%>
+<%@page import="dao.conexion"%>
 <html lang="en">
 <%@ include file="..\paginas\similares\encabezado.jsp"%>
 
@@ -26,95 +28,39 @@
 	<div class="container">
 		<div class="row justify-content-end">
 			<div class="col-lg-4">
-				<form action="#" class="appointment-form">
+				<form method="post" action="huesped.jsp" class="appointment-form">
 					<h3 class="mb-3">Agende su cuarto</h3>
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<input type="text" class="form-control"
-									placeholder="Nombres y apellidos completos">
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<div class="input-wrap">
-									<div class="icon">
-										<span class="ion-md-calendar"></span>
-									</div>
-									<input type="text"
-										class="form-control appointment_date-check-in"
-										placeholder="Dia de registro">
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<div class="input-wrap">
-									<div class="icon">
-										<span class="ion-md-calendar"></span>
-									</div>
-									<input type="text"
-										class="form-control appointment_date-check-out"
-										placeholder="Dia final">
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<div class="form-field">
-									<div class="select-wrap">
-										<div class="icon">
-											<span class="fa fa-chevron-down"></span>
-										</div>
-										<select name="" id="" class="form-control">
-											<option value="">Adultos</option>
-											<option value="">1</option>
-											<option value="">2</option>
-											<option value="">3</option>
-											<option value="">4</option>
-											<option value="">5</option>
-										</select>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<div class="form-field">
-									<div class="select-wrap">
-										<div class="icon">
-											<span class="fa fa-chevron-down"></span>
-										</div>
-										<select name="" id="" class="form-control">
-											<option value="">Niños(12-16 años)</option>
-											<option value="">1</option>
-											<option value="">2</option>
-											<option value="">3</option>
-											<option value="">4</option>
-											<option value="">5</option>
-										</select>
-									</div>
-								</div>
+								<input type="text" class="form-control" placeholder="Nombres"
+									id="nombre" name="nombre" required>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
 								<input type="text" class="form-control"
-									placeholder="Núm. de Celular">
+									placeholder="Apellido Paterno" id="apepaterno"
+									name="apepaterno" required>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<div class="input-wrap">
-									<div class="icon">
-										<span class="ion-ios-clock"></span>
-									</div>
-									<input type="text" class="form-control appointment_time"
-										placeholder="Hora de Visita">
-								</div>
+								<input type="text" class="form-control"
+									placeholder="Apellido Materno" id="apematerno"
+									name="apematerno" required>
 							</div>
 						</div>
-						<div class="col-md-12">
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="DNI"
+									id="dni" name="dni" required>
+							</div>
+						</div>
+
+
+						<div class="col-md-12 ">
 							<div class="form-group">
 								<input type="submit" value="Programe su registro"
 									class="btn btn-primary py-3 px-4">
@@ -122,6 +68,15 @@
 						</div>
 					</div>
 				</form>
+				<h6>
+					<%
+					conexion con = new conexion();
+
+					Connection cnx = con.crearCNX();
+
+					out.print(cnx);
+					%>
+				</h6>
 			</div>
 		</div>
 	</div>
