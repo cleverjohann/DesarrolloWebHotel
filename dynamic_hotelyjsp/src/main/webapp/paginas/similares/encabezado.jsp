@@ -84,7 +84,7 @@
 						class="nav-link">Servicios</a></li>
 					<li class="nav-item"><a href="listarregistros.jsp"
 						class="nav-link">Registros</a></li>
-						<li class="nav-item"><a href="listarcuartos.jsp"
+						<li class="nav-item"><a href="listarhabitacion.jsp"
 						class="nav-link">Cuartos</a></li>
 					<li class="nav-item"><a href="ingresar.jsp" class="nav-link">Ingresar</a></li>
 				</ul>
