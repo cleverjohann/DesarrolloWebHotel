@@ -70,6 +70,8 @@
 				</form>
 				<h6>
 					<%
+					
+
 					conexion con = new conexion();
 
 					Connection cnx = con.crearCNX();

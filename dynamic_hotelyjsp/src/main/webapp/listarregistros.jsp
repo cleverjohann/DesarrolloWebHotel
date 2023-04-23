@@ -178,7 +178,7 @@ table {
 							<h3>Bienvenidos al proyecto de curso hotel del GRUPO UTP</h3>
 							<p class="mb-4">
 								Conocer mas sobre los registros <a href="agregarregistros.jsp"
-									class="btn btn-secondary">Listarlos aqui</a>
+									class="btn btn-secondary">Agregar nuevo registro aqui</a>
 							</p>
 							<br>
 							<div class="dbox w-100 d-flex align-items-start">

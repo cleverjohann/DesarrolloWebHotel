@@ -7,7 +7,7 @@ public class habitacion {
 	String num_habitacion, tipo_habitacion;
 	int capacidad;
 	boolean disponibilidad;
-	BigDecimal precio;
+	double precio;
 	String precioString;
 	
 	//
@@ -51,20 +51,20 @@ public class habitacion {
 		this.disponibilidad = disponibilidad;
 	}
 
-	public BigDecimal getPrecio() {
-		return precio;
-	}
-
-	public void setPrecio(BigDecimal precio) {
-		this.precio = precio;
-	}
-
 	public String getPrecioString() {
 		return precioString;
 	}
 
 	public void setPrecioString(String precioString) {
 		this.precioString = precioString;
+	}
+
+	public double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(double precio) {
+		this.precio = precio;
 	}
 
 	
