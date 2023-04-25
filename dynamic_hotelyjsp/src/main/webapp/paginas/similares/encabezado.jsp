@@ -87,6 +87,7 @@
 						<li class="nav-item"><a href="listarhabitacion.jsp"
 						class="nav-link">Cuartos</a></li>
 					<li class="nav-item"><a href="ingresar.jsp" class="nav-link">Ingresar</a></li>
+					<li class="nav-item"><a href="agregarReserva.jsp" class="nav-link">Ingresar</a></li>
 				</ul>
 			</div>
 		</div>

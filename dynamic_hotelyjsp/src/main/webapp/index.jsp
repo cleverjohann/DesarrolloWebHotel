@@ -1,8 +1,10 @@
 <!DOCTYPE html>
+<%@page import="DAO.Dao"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="dao.conexion"%>
+
 <html lang="en">
-<%@ include file="..\paginas\similares\encabezado.jsp"%>
+
+<%@ include file="..\paginas\similares\header.jsp"%>
 
 <div class="hero-wrap js-fullheight"
 	style="background-image: url('images/bg_1.jpg');"
@@ -70,11 +72,9 @@
 				</form>
 				<h6>
 					<%
-					
+					Dao con = new Dao();
 
-					conexion con = new conexion();
-
-					Connection cnx = con.crearCNX();
+					Connection cnx = con.crearCnx();
 
 					out.print(cnx);
 					%>
