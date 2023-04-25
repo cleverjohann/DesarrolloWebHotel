@@ -1,90 +1,135 @@
-package DAO;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import Clases.Huesped;
+import javax.management.RuntimeErrorException;
 
-public class DaoHuesped extends Dao {
-	
-	public void guardar (Huesped huesped)
+public class daohuesped extends conexion
+{
+	public void guardar(huesped huesped) 
 	{
-		Connection cnx = crearCnx();
-		String sqlhuesped = "INSERT INTO public.huesped(nombre, apellido_paterno, apellido_materno, direccion, dni, telefono, email)VALUES ( ?, ?, ?, ?, ?, ?, ?)";
-		try
+		Connection con = crearCNX(); 
+		String sql = "insert into public.huesped(id_huesped,nombre,apellido_paterno,apellido_materno,direccion,dni,telefono,email) values(nextval('seq_huesped'),?,?,?,?,?,?,?)";
+		try 
 		{
-			PreparedStatement st = cnx.prepareStatement(sqlhuesped);
-			st.setString(1, huesped.getNombre());
-			st.setString(2, huesped.getApellido_paterno());
-			st.setString(3, huesped.getApellido_materno());
-			st.setString(4, huesped.getDireccion());
-			st.setString(5, huesped.getDni());
-			st.setString(6, huesped.getTelefono());
-			st.setString(7, huesped.getEmail());
-			st.execute();
-			
-		}catch(SQLException e)
-		{
+			PreparedStatement ps = con.prepareStatement(sql);	
+			ps.setInt(1, huesped.getId_huesped());
+			ps.setString(2, huesped.getNombre());
+			ps.setString(3, huesped.getApepaterno());
+			ps.setString(4, huesped.getApematerno());
+			ps.setString(5, huesped.getDireccion());
+			ps.setString(6, huesped.getDni());
+			ps.setString(7, huesped.getTelefono());
+			ps.setString(8, huesped.getEmail());
+			//
+			ps.execute();
+		} catch (SQLException e) {// no tipo runtime
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new RuntimeException();
-		}finally {
+			throw new RuntimeException(e);
+		} finally {
 			try {
-				cnx.close();
+				con.close();
 			} catch (SQLException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
-	public List<Huesped> obtenerHuespedes() throws SQLException {
-		Connection cnx = crearCnx();
-        String sql = "SELECT * FROM public.huesped";
-        List<Huesped> huespedes = new ArrayList<>();
 
-        try (PreparedStatement pstmt = cnx.prepareStatement(sql)) {
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                int id_huesped = rs.getInt("id_huesped");
-                String nombre = rs.getString("nombre");
-                String apellido_paterno = rs.getString("apellido_paterno");
-                String apellido_materno = rs.getString("apellido_materno");
-                String direccion = rs.getString("direccion");
-                String dni = rs.getString("dni");
-                String telefono = rs.getString("telefono");
-                String email = rs.getString("email");
-                Huesped huesped = new Huesped();
-                huesped.setId_huesped(id_huesped);
-                huesped.setNombre(nombre);
-                huesped.setApellido_paterno(apellido_paterno);
-                huesped.setApellido_materno(apellido_materno);
-                huesped.setDireccion(direccion);
-                huesped.setDni(dni);
-                huesped.setTelefono(telefono);
-                huesped.setEmail(email);
-                huespedes.add(huesped);
-            }
-        }
+	public List<huesped> listar() 
+	{
+		List<huesped> listarHuespedes = new ArrayList<>();
+		Connection con = crearCNX();
+		String sql = "select id_huesped, nombre, apellido_paterno, apellido_materno, direccion, dni, telefono, email from public.huespedes ";
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			//
+			ResultSet rs = ps.executeQuery();// ejecuta y trae RESULSET
+			while (rs.next()) {
+				huesped h = new huesped();
+				h.setId_huesped(rs.getInt(1));
+				h.setNombre(rs.getString(2));
+				h.setApepaterno(rs.getString(3));
+				h.setApematerno(rs.getString(4));
+				h.setDireccion(rs.getString(5));
+				h.setDni(rs.getString(6));
+				h.setTelefono(rs.getString(7));
+				h.setEmail(rs.getString(8));
+				listarHuespedes.add(h);
+			}
+			return listarHuespedes;
+		} catch (SQLException e) {// no tipo runtime
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public int Actualizar(huesped huesped) {
+		Connection con = crearCNX();
+		int i = 0;
+		try 
+		{
+			PreparedStatement ps = con.prepareStatement(
+					"UPDATE huesped SET id_huesped=?, nombre=?, apellido_paterno=?, apellido_materno=?, direccion=?, dni=?, telefono=?, email=?  WHERE id_huesped=?");
+			ps.setInt(1, huesped.getId_huesped());
+			ps.setString(2, huesped.getNombre());
+			ps.setString(3, huesped.getApepaterno());
+			ps.setString(4, huesped.getDireccion());
+			ps.setString(5, huesped.getDni());
+			ps.setString(6, huesped.getTelefono());
+			ps.setString(8, huesped.getEmail());
+			i = ps.executeUpdate();
+			if (i != 1) {
+				i = 0;
+			}
+		} catch (SQLException e) {// no tipo runtime
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return i;
+	}
+	
+	public void eliminar(int id) 
+	{
+		Connection con = crearCNX();
+		try {
 
-        return huespedes;
-    }
-	public int obtenerUltimoIdHuesped() throws SQLException {
-		Connection cnx = crearCnx();
-	    String sql = "SELECT MAX (id_huesped) as id_huesped FROM public.huesped";
-	    int ultimoId = 0;
-
-	    try (PreparedStatement pstmt = cnx.prepareStatement(sql)) {
-	        ResultSet rs = pstmt.executeQuery();
-	        if (rs.next()) {
-	            ultimoId = rs.getInt("id_huesped");
-	        }
-	    }
-
-	    return ultimoId;
+			PreparedStatement ps = con.prepareStatement("UPDATE huesped WHERE id_habitacion="+id);
+			ps.executeUpdate();
+		} catch (SQLException e) {// no tipo runtime
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }
