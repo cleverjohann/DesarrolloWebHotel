@@ -1,0 +1,31 @@
+package servletsHuesped;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import clases.Huesped;
+import dao.DAOhuesped;
+
+@WebServlet("/ServletGetEscogerHuesped")
+public class ServletGetEscogerHuesped extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public ServletGetEscogerHuesped() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		int idCategoria = Integer.parseInt(req.getParameter("idhuesped"));
+        DAOhuesped dao = new DAOhuesped();
+        Huesped huesped = dao.obtenerporId(idCategoria);
+        req.setAttribute("categoria", categoria);
+        req.getRequestDispatcher("/paginas/categoria/editarCategoria.jsp").forward(req, resp);
+	}
+
+
+}

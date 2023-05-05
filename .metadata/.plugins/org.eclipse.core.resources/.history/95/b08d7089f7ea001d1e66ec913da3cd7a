@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<jsp:directive.include file="..\similares\encabezado.jsp" />
+<%@page import="java.util.List"%>
+<%@page import="clases.Huesped"%>
+<%@page import="dao.DAOhuesped"%>
+<style>
+table {
+	display: block;
+	height: 420px;
+	overflow-y: scroll;
+}
+
+.button {
+	display: inline-block;
+	padding: 10px 20px;
+	text-align: center;
+	text-decoration: none;
+	color: #ffffff;
+	background-color: #7aa8b7;
+	border-radius: 6px;
+	outline: none;
+	transition: 0.3s;
+}
+
+.button:hover {
+	background-color: #c2c7c7;
+}
+</style>
+<section class="ftco-section bg-light">
+	<div class="container">
+		<div class="row no-gutters">
+			<div class="col-md-12">
+				<div class="row no-gutters">
+
+					<div class="col-lg-8 col-md-7 d-flex align-items-stretch">
+						<div class="contact-wrap w-100 p-md-5 p-4">
+							<h3 class="mb-4">Registro de huespedes del hostal UTP</h3>
+							<hr>
+							<label>Aqui puede buscar a los huespedes por nombre, dni
+								o apellidos paternos</label>
+							<form method="post" action="ServletPostBusquedaHuespedes">
+								<input type="text" name="busqueda" /> <input type="submit"
+									value="Buscar" />
+							</form>
+							<h2>Resultados de la busqueda</h2>
+							<c:if test="${empty listaResultado}">
+								<label>No se encontraron resultados</label>
+							</c:if>
+							<hr>
+							<div id="form-message-warning" class="mb-4"></div>
+							<%
+							Huesped habitacion = new Huesped();
+							dao.DAOhuesped daohues = new dao.DAOhuesped();
+							List<Huesped> lst = daohues.listar();
+							%>
+
+							<table border='1' class='table table-striped'>
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Nombres</th>
+										<th>Ape Paternos</th>
+										<th>Ape Maternos</th>
+										<th>DNI</th>
+										<th>Estado</th>
+										<th></th>
+										<th></th>
+									</tr>
+								</thead>
+								<body>
+									<c:forEach var="resultado" items="${listaResultado}">
+										<tr>
+											<td>${resultado.getId_huesped()}</td>
+											<td>${resultado.getNombre()}</td>
+											<td>${resultado.getApepaterno()}</td>
+											<td>${resultado.getApematerno()}</td>
+											<td>${resultado.getDni()}</td>
+											<td>${resultado.isEstado()}</td>
+											<td>
+												<form
+													action="${pageContext.request.contextPath}/ServletPostEscogerHuesped"
+													method="post" /> <input type="hidden" name="idhuesped"
+												value="${resultado.getId_huesped()}"><input
+												type="submit" class="btn btn-primary" value="modificar">
+												</form>
+											</td>
+
+											<td>
+												<form
+													action="${pageContext.request.contextPath}/ServletPostEliminarHuesped"
+													method="post">
+													<input type="hidden" name="idhuesped"
+														value="${resultado.getId_huesped()}"><input
+														type="submit" class="btn btn-primary" value="eliminar"
+														onclick="
+                                       if (confirm('Desea inhabilitar al huesped??'))
+                                           form.action = '${pageContext.request.contextPath}/ServletPostEliminarHuesped';
+                                       else
+                                           return false;" />
+												</form>
+											</td>
+
+										</tr>
+									</c:forEach>
+								</body>
+							</table>
+						</div>
+					</div>
+
+					<div class="col-lg-4 col-md-5 d-flex align-items-stretch">
+						<div class="info-wrap bg-primary w-100 p-md-5 p-4">
+							<h3>Bienvenidos al proyecto de curso hotel del GRUPO UTP</h3>
+							<p class="mb-4">
+								Conocer mas sobre los registros <a href="agregarhuesped.jsp"
+									class="btn btn-secondary">Agregue al nuevo huesped</a>
+							</p>
+							<br>
+							<div class="dbox w-100 d-flex align-items-start">
+								<div
+									class="icon d-flex align-items-center justify-content-center">
+									<span class="fa fa-map-marker"></span>
+								</div>
+								<div class="text pl-3">
+									<p>
+										<span>Direccion:</span> Av. Portaroblenos 1001
+									</p>
+								</div>
+							</div>
+							<div class="dbox w-100 d-flex align-items-center">
+								<div
+									class="icon d-flex align-items-center justify-content-center">
+									<span class="fa fa-phone"></span>
+								</div>
+								<div class="text pl-3">
+									<p>
+										<span>Celular:</span> <a href="#">+51969696969</a>
+									</p>
+								</div>
+							</div>
+							<div class="dbox w-100 d-flex align-items-center">
+								<div
+									class="icon d-flex align-items-center justify-content-center">
+									<span class="fa fa-paper-plane"></span>
+								</div>
+								<div class="text pl-3">
+									<p>
+										<span>E-mail:</span> <a href="#">grupo@utp.edu.pe</a>
+									</p>
+								</div>
+							</div>
+							<div class="dbox w-100 d-flex align-items-center">
+								<div
+									class="icon d-flex align-items-center justify-content-center">
+									<span class="fa fa-globe"></span>
+								</div>
+								<div class="text pl-3">
+									<p>
+										<span>Website</span> <a href="#">canvas.utp.edu.pe</a>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<jsp:directive.include file="..\similares\piedepagina.jsp" />

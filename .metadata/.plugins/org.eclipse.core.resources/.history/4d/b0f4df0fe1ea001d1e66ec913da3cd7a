@@ -1,0 +1,35 @@
+package servletsHuesped;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import clases.Huesped;
+import dao.DAOhuesped;
+
+/**
+ * Servlet implementation class ServletPostBusquedaHuespedes
+ */
+@WebServlet("/ServletPostBusquedaHuespedes")
+public class ServletPostBusquedaHuespedes extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+    public ServletPostBusquedaHuespedes() {
+        super();       
+    }
+
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cadena = req.getParameter("busqueda");
+		DAOhuesped dao = new DAOhuesped();
+		List<Huesped> listaHuespedes = dao.consultar(cadena);
+		req.setAttribute("listaResultado", listaHuespedes);
+		req.getRequestDispatcher("/paginas/huespedes/jstlBusquedaHuespedes.jsp").forward(req, resp);
+	}
+
+
+}

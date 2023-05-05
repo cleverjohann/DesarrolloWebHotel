@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<jsp:directive.include file="..\paginas\similares\encabezado.jsp" />
+<%@page import="java.util.List"%>
+<%@page import="clases.Huesped"%>
+<%@page import="dao.DAOhuesped"%>
+<style>
+table {
+	display: block;
+	height: 320px;
+	overflow-y: scroll;
+}
+
+.button {
+	display: inline-block;
+	padding: 10px 20px;
+	text-align: center;
+	text-decoration: none;
+	color: #ffffff;
+	background-color: #7aa8b7;
+	border-radius: 6px;
+	outline: none;
+	transition: 0.3s;
+}
+
+.button:hover {
+	background-color: #c2c7c7;
+}
+</style>
+<%
+String operacion = request.getParameter("operacion");
+if (operacion != null) {
+	if (operacion.equals("UPDATE")) {
+		Huesped hp = new Huesped();
+		int id = Integer.parseInt(request.getParameter("id_huesped"));
+		String nombre = request.getParameter("nombres");
+		String ap_paterno = request.getParameter("apepaternos");
+		String ap_materno = request.getParameter("apematernos");
+		String dni = request.getParameter("dni");
+		hp.setId_huesped(id);
+		hp.setNombre(nombre);
+		hp.setApepaterno(ap_paterno);
+		hp.setApematerno(ap_materno);
+		hp.setDni(dni);
+		dao.DAOhuesped daoh = new dao.DAOhuesped();
+		daoh.Actualizar(hp);
+	}
+	if (operacion.equals("DELETE")) {
+		int idhuesped = Integer.parseInt(request.getParameter("id"));
+		dao.DAOhuesped daoh = new dao.DAOhuesped();
+		daoh.eliminar(idhuesped);
+	}
+	if (operacion.equals("INSERT")) {
+		Huesped huesped = new Huesped();
+		String nombre = request.getParameter("nombres");
+		String ap_paterno = request.getParameter("apepaternos");
+		String ap_materno = request.getParameter("apematernos");
+		String dni = request.getParameter("dni");
+		huesped.setNombre(nombre);
+		huesped.setApepaterno(ap_paterno);
+		huesped.setApematerno(ap_materno);
+		huesped.setDni(dni);
+		huesped.setEstado(true);
+		dao.DAOhuesped daohuesped = new dao.DAOhuesped();
+		daohuesped.guardar(huesped);
+	}
+}
+//DaoCurso dao = new DaoCurso();
+%>
+<section class="ftco-section bg-light">
+	<div class="container">
+		<div class="row no-gutters">
+			<div class="col-md-12">
+				<div class="row no-gutters">
+					<div class="col-lg-8 col-md-7 d-flex align-items-stretch">
+						<div class="contact-wrap w-100 p-md-5 p-4">
+							<h3>Huespedes</h3>
+							<label>Aqui puede buscar a los huespedes por nombre, dni
+								o apellidos paternos</label>
+							<form method="post" action="ServletPostBusquedaHuespedes">
+								<input type="text" name="busqueda" /> <input type="submit"
+									value="Buscar" />
+							</form>
+							<hr>
+							<h3 class="mb-4">Registro de huespedes del hostal UTP</h3>
+							<div id="form-message-warning" class="mb-4"></div>
+							<table border='1' class='table table-striped'>
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Nombres</th>
+										<th>Ape Paternos</th>
+										<th>Ape Maternos</th>
+										<th>DNI</th>
+										<th>Estado</th>
+										<th></th>
+										<th></th>
+									</tr>
+								</thead>
+								<body>
+									<c:forEach var="resultado" items="${resultados}">
+										<tr>
+											<td>${resultado.getId_huesped()}</td>
+											<td>${resultado.getNombre()}</td>
+											<td>${resultado.getApepaterno()}</td>
+											<td>${resultado.getApematerno()}</td>
+											<td>${resultado.getDni()}</td>
+											<td>${resultado.isEstado()}</td>
+											<td>
+												<form
+													action="${pageContext.request.contextPath}/modificarhabitacion.jsp?operacion=SELECTBYID"
+													method="post" /> <input type="hidden" name="idhuesped"
+												value="${resultado.getId_huesped()}"><input
+												type="submit" class="btn btn-primary" value="modificar">
+												</form>
+											</td>
+											<td>
+												<form
+													action="${pageContext.request.contextPath}/listarhabitacion.jsp?operacion=DELETE"
+													method="post">
+													<input type="hidden" name="idhuesped"
+														value="${resultado.getId_huesped()}"><input
+														type="submit" class="btn btn-primary" value="eliminar"
+														onclick="
+                                       if (confirm('Desea eliminar el servicio??'))
+                                           form.action = '${pageContext.request.contextPath}/listarhabitacion.jsp?operacion=DELETE';
+                                       else
+                                           return false;" />
+												</form>
+											</td>
+										</tr>
+									</c:forEach>
+								</body>
+							</table>
+						</div>
+					</div>
+
+					<div class="col-lg-4 col-md-5 d-flex align-items-stretch">
+						<div class="info-wrap bg-primary w-100 p-md-5 p-4">
+							<h3>Bienvenidos al proyecto de curso hotel del GRUPO UTP</h3>
+							<p class="mb-4">
+								Conocer mas sobre los registros 
+								<a href="../paginas/huespedes/jstlAgregarHuespedes.jsp"
+									class="btn btn-secondary">Agregue al nuevo huesped</a>
+							</p>
+							
+							<br>
+							<div class="dbox w-100 d-flex align-items-start">
+								<div
+									class="icon d-flex align-items-center justify-content-center">
+									<span class="fa fa-map-marker"></span>
+								</div>
+								<div class="text pl-3">
+									<p>
+										<span>Direccion:</span> Av. Portaroblenos 1001
+									</p>
+								</div>
+							</div>
+							<div class="dbox w-100 d-flex align-items-center">
+								<div
+									class="icon d-flex align-items-center justify-content-center">
+									<span class="fa fa-phone"></span>
+								</div>
+								<div class="text pl-3">
+									<p>
+										<span>Celular:</span> <a href="#">+51969696969</a>
+									</p>
+								</div>
+							</div>
+							<div class="dbox w-100 d-flex align-items-center">
+								<div
+									class="icon d-flex align-items-center justify-content-center">
+									<span class="fa fa-paper-plane"></span>
+								</div>
+								<div class="text pl-3">
+									<p>
+										<span>E-mail:</span> <a href="#">grupo@utp.edu.pe</a>
+									</p>
+								</div>
+							</div>
+							<div class="dbox w-100 d-flex align-items-center">
+								<div
+									class="icon d-flex align-items-center justify-content-center">
+									<span class="fa fa-globe"></span>
+								</div>
+								<div class="text pl-3">
+									<p>
+										<span>Website</span> <a href="#">canvas.utp.edu.pe</a>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<%@ include file="..\paginas\similares\piedepagina.jsp"%>

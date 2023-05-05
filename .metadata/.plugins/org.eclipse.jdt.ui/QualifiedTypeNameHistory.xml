@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="org.wildfly.security.util.AbstractAlgorithmParametersSpiImpl"/>
+    <fullyQualifiedTypeName name="java.security.cert.CertSelector"/>
+    <fullyQualifiedTypeName name="java.sql.Date"/>
+    <fullyQualifiedTypeName name="java.util.Date"/>
+    <fullyQualifiedTypeName name="java.lang.System"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="clases.Huesped"/>
+    <fullyQualifiedTypeName name="dao.DAOhuesped"/>
+    <fullyQualifiedTypeName name="clases.Habitacion"/>
+</qualifiedTypeNameHistroy>

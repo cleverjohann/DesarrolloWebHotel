@@ -1,0 +1,37 @@
+package servletsHuesped;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/ServletPostActualizarHuesped")
+public class ServletPostActualizarHuesped extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+    public ServletPostActualizarHuesped() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Habitacion habitacion = new Habitacion();
+		int id = Integer.parseInt(request.getParameter("idhabitacion"));
+		String numHabitacion = request.getParameter("numhabitacion");
+		String tipoHabitacion = request.getParameter("tipohabitacion");
+		int capacidad = Integer.parseInt(request.getParameter("capacidadhab"));
+		double precio = Double.parseDouble(request.getParameter("preciohabitacion"));
+
+		habitacion.setId(id);
+		habitacion.setNum_habitacion(numHabitacion);
+		habitacion.setTipo_habitacion(tipoHabitacion);
+		habitacion.setCapacidad(capacidad);
+		habitacion.setPrecio(precio);
+
+		dao.DAOhabitacion daohabitacion = new dao.DAOhabitacion();
+		daohabitacion.Actualizar(habitacion);
+		req.getRequestDispatcher("/paginas/huespedes/jstlListarHuespedes.jsp").forward(req, resp);  
+	}
+
+}
