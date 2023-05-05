@@ -1,0 +1,28 @@
+package servletsHuesped;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import clases.Huesped;
+import dao.DAOhuesped;
+
+@WebServlet("/ServletGetEscogerHuesped")
+public class ServletGetEscogerHuesped extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public ServletGetEscogerHuesped() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		int idhuesped = Integer.parseInt(req.getParameter("idhuesped"));
+        DAOhuesped dao = new DAOhuesped();
+        Huesped huesped = dao.obtenerporId(idhuesped);
+        req.setAttribute("huesped", huesped);
+        req.getRequestDispatcher("/paginas/huespedes/jstlModificarHuespedes.jsp").forward(req, resp);
+	}
+}

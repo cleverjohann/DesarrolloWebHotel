@@ -1,0 +1,54 @@
+package servletsHuesped;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dao.DAOhuesped;
+
+/**
+ * Servlet implementation class ServletPostAgregarHuesped
+ */
+@WebServlet("/ServletPostAgregarHuesped")
+public class ServletPostAgregarHuesped extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public ServletPostAgregarHuesped() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		DAOhuesped dao = new DAOhuesped();
+		boolean estadoboolean = false;
+		String titulo = req.getParameter("titulo");
+		String descripcion = req.getParameter("descripcion");
+		String estadostring = req.getParameter("estadostring");
+		estadoboolean = (estadostring.equalsIgnoreCase("activo")) ? true : false;
+
+		Categoria cat = new Categoria();
+		cat.setTitulo(titulo);
+		cat.setDescripcion(descripcion);
+		cat.setEstadobool(estadoboolean);
+		dao.Crear(cat);
+		//
+		RequestDispatcher dispatcher = null;
+		AccionCategorias obj = null;
+		//
+		obj = AccionCategorias.getAccion("listar");
+		dispatcher = req.getRequestDispatcher(obj.AccionCategorias(req, resp));
+		dispatcher.forward(req, resp);
+	}
+
+}

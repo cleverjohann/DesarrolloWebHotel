@@ -1,0 +1,36 @@
+package servletsHuesped;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import clases.Huesped;
+import dao.DAOhuesped;
+
+@WebServlet("/ServletGetEliminarHuesped")
+public class ServletGetEliminarHuesped extends HttpServlet {
+
+    public ServletGetEliminarHuesped() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+		int id = Integer.parseInt(request.getParameter("idhuesped"));
+		DAOhuesped dao = new DAOhuesped();
+		dao.eliminar(id);
+		//
+		List<Huesped> listaHuespedes = dao.listar();
+        req.setAttribute("resultados", listaHuespedes );
+        req.getRequestDispatcher("/paginas/huespedes/jstlListarHuespedes.jsp").forward(req, resp);  
+	}
+
+
+}

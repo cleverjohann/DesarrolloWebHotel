@@ -1,0 +1,254 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.management.RuntimeErrorException;
+
+import clases.Habitacion;
+import clases.Huesped;
+
+public class DAOhuesped extends conexion {
+	public void guardar(Huesped huesped) {
+		Connection con = crearCNX();
+		String sql = "insert into public.huesped(id_huesped,nombre,apellido_paterno,apellido_materno,dni,estado) values(nextval('seqhuesped'),?,?,?,?,?)";
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, huesped.getNombre());
+			ps.setString(2, huesped.getApepaterno());
+			ps.setString(3, huesped.getApematerno());
+			ps.setString(4, huesped.getDni());
+			ps.setBoolean(5, huesped.isEstado());
+			//
+			ps.execute();
+		} catch (SQLException e) {//
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public List<Huesped> listar() {
+		List<Huesped> listarHuespedes = new ArrayList<>();
+		Connection con = crearCNX();
+		String sql = "select id_huesped, nombre, apellido_paterno, apellido_materno, dni, estado from public.huesped WHERE nombre is not null ORDER BY id_huesped asc";
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			//
+			ResultSet rs = ps.executeQuery();// ejecuta y trae RESULSET
+			while (rs.next()) {
+				Huesped h = new Huesped();
+				h.setId_huesped(rs.getInt(1));
+				h.setNombre(rs.getString(2));
+				h.setApepaterno(rs.getString(3));
+				h.setApematerno(rs.getString(4));
+				h.setDni(rs.getString(5));
+				h.setEstado(rs.getBoolean(6));
+				listarHuespedes.add(h);
+			}
+			return listarHuespedes;
+		} catch (SQLException e) {// no tipo runtime
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public List<Huesped> listarDisponibles() {
+		List<Huesped> listarHuespedes = new ArrayList<>();
+		Connection con = crearCNX();
+		String sql = "select id_huesped, nombre, apellido_paterno, apellido_materno, dni, estado from huesped WHERE nombre is not null and estado is not false ORDER BY id_huesped asc";
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			//
+			ResultSet rs = ps.executeQuery();// ejecuta y trae RESULSET
+			while (rs.next()) {
+				Huesped h = new Huesped();
+				h.setId_huesped(rs.getInt(1));
+				h.setNombre(rs.getString(2));
+				h.setApepaterno(rs.getString(3));
+				h.setApematerno(rs.getString(4));
+				h.setDni(rs.getString(5));
+				h.setEstado(rs.getBoolean(6));
+				listarHuespedes.add(h);
+			}
+			return listarHuespedes;
+		} catch (SQLException e) {// no tipo runtime
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public int Actualizar(Huesped huesped) {
+		Connection con = crearCNX();
+		int i = 0;
+		try {
+			PreparedStatement ps = con.prepareStatement(
+					"UPDATE huesped SET nombre=?, apellido_paterno=?, apellido_materno=?, dni=?, estado=?  WHERE id_huesped=?");
+
+			ps.setString(1, huesped.getNombre());
+			ps.setString(2, huesped.getApepaterno());
+			ps.setString(3, huesped.getApematerno());
+			ps.setString(4, huesped.getDni());
+			ps.setBoolean(5, true);
+			ps.setInt(6, huesped.getId_huesped());
+			i = ps.executeUpdate();
+			if (i != 1) {
+				i = 0;
+			}
+		} catch (SQLException e) {// no tipo runtime
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return i;
+	}
+
+	public void eliminar(int id) {
+		Connection con = crearCNX();
+		try {
+
+			PreparedStatement ps = con.prepareStatement("UPDATE huesped SET estado='false' WHERE id_huesped=" + id);
+			ps.executeUpdate();
+		} catch (SQLException e) {// no tipo runtime
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public Huesped obtenerporId(int id) {
+		Huesped huesped = new Huesped();
+
+		Connection con = crearCNX();
+		try {
+			PreparedStatement stmt = con.prepareStatement(
+					"SELECT id_huesped, nombre, apellido_paterno, apellido_materno, dni, estado FROM huesped WHERE id_huesped="
+							+ id);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				huesped.setId_huesped(rs.getInt(1));
+				huesped.setNombre(rs.getString(2));
+				huesped.setApepaterno(rs.getString(3));
+				huesped.setApematerno(rs.getString(4));
+				huesped.setDni(rs.getString(5));
+				huesped.setEstado(rs.getBoolean(6));
+			}
+		} catch (SQLException e) {// no tipo runtime
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return huesped;
+	}
+
+	public List<Huesped> consultar(String busqueda){
+		List<Huesped> listaHuespedes = new ArrayList<>();
+		Connection cnx = crearCNX();
+		String sql = "select id_huesped, nombre, apellido_paterno, apellido_materno, dni, estado from public.huesped WHERE nombred LIKE ? ORDER BY id_huesped asc";
+		try {
+			PreparedStatement st = cnx.prepareStatement(sql);
+			st.setString(1, "%" + busqueda + "%");
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				Huesped h = new Huesped();
+				h.setId_huesped(rs.getInt(1));
+				h.setNombre(rs.getString(2));
+				h.setApepaterno(rs.getString(3));
+				h.setApematerno(rs.getString(4));
+				h.setDni(rs.getString(5));
+				h.setEstado(rs.getBoolean(6));
+				listaHuespedes.add(h);
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				cnx.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return listaHuespedes;
+	}
+	
+	public List<Huesped> obtenerHuespedes() throws SQLException {
+		Connection cnx = crearCNX();
+        String sql = "SELECT * FROM public.huesped";
+        List<Huesped> huespedes = new ArrayList<>();
+
+        try (PreparedStatement pstmt = cnx.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int id_huesped = rs.getInt("id_huesped");
+                String nombre = rs.getString("nombre");
+                String apellido_paterno = rs.getString("apellido_paterno");
+                String apellido_materno = rs.getString("apellido_materno");
+                String direccion = rs.getString("direccion");
+                String dni = rs.getString("dni");
+                String telefono = rs.getString("telefono");
+                String email = rs.getString("email");
+                Huesped huesped = new Huesped();
+                huesped.setId_huesped(id_huesped);
+                huesped.setNombre(nombre);
+                huesped.setApepaterno(apellido_paterno);
+                huesped.setApematerno(apellido_materno);
+                huesped.setDireccion(direccion);
+                huesped.setDni(dni);
+                huesped.setTelefono(telefono);
+                huesped.setEmail(email);
+                huespedes.add(huesped);
+            }
+        }
+        return huespedes;
+	}
+
+}

@@ -1,0 +1,15 @@
+1682397577485	Rename resource 'listarHuespedes.jsp'
+1682397626904	Copy file
+1682403522950	Move compilation units
+1682403569595	Rename type 'reserva'
+1682403576510	Rename type 'huesped'
+1682403585208	Rename type 'habitacion'
+1682403986403	Rename type 'daohabitacion'
+1682403992433	Rename type 'daohuesped'
+1682403998624	Rename type 'daoreserva'
+1682404399484	Rename local variable 'listarHuespedes'
+1682404426810	Rename local variable 'huesped'
+1682426457397	Rename local variable 'habitacion'
+1682453986594	Rename local variable 'h'
+1682459861207	Delete element
+1682459867888	Delete element

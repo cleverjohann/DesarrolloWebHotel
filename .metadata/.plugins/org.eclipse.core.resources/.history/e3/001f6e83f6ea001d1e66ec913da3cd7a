@@ -1,0 +1,44 @@
+package servletsHuesped;
+
+import java.io.IOException;
+import java.util.List;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import clases.Huesped;
+import dao.DAOhuesped;
+
+@WebServlet("/ServletPostActualizarHuesped")
+public class ServletPostActualizarHuesped extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+    public ServletPostActualizarHuesped() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		DAOhuesped dao = new DAOhuesped();
+		Huesped huesped = new Huesped();
+		//
+		String nombre = req.getParameter("nombres");
+		String ap_paterno = req.getParameter("apepaternos");
+		String ap_materno = req.getParameter("apematernos");
+		String dni = req.getParameter("dni");
+		int idhuesped = Integer.parseInt(req.getParameter("idhuesped"));
+		//
+		huesped.setNombre(nombre);
+		huesped.setApepaterno(ap_paterno);
+		huesped.setApematerno(ap_materno);
+		huesped.setDni(dni);
+		huesped.setEstado(true);
+		//
+		dao.Actualizar(huesped);
+		//
+		List<Huesped> listaHuespedes = dao.listar();
+		req.setAttribute("resultados", listaHuespedes );
+		req.getRequestDispatcher("/paginas/huespedes/jstlListarHuespedes.jsp").forward(req, resp);  
+	}
+
+}

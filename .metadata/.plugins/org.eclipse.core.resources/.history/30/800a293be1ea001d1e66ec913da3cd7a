@@ -1,0 +1,59 @@
+package servletsHuesped;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import clases.Huesped;
+import dao.DAOhuesped;
+
+@WebServlet("/ServletPostAgregarHuesped")
+public class ServletPostAgregarHuesped extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	public ServletPostAgregarHuesped() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		String operacion = req.getParameter("operacion");
+		switch (operacion) {
+		case "REDIRIGIR":
+			req.getRequestDispatcher("/paginas/huespedes/jstlListarHuespedes.jsp").forward(req, resp);
+			break;
+		case "AGREGAR":
+
+			DAOhuesped dao = new DAOhuesped();
+			Huesped huesped = new Huesped();
+			String nombre = req.getParameter("nombres");
+			String ap_paterno = req.getParameter("apepaternos");
+			String ap_materno = req.getParameter("apematernos");
+			String dni = req.getParameter("dni");
+			huesped.setNombre(nombre);
+			huesped.setApepaterno(ap_paterno);
+			huesped.setApematerno(ap_materno);
+			huesped.setDni(dni);
+			huesped.setEstado(true);
+			dao.DAOhuesped daohuesped = new dao.DAOhuesped();
+			daohuesped.guardar(huesped);
+			List<Huesped> listaHuespedes = dao.listar();
+			req.setAttribute("listaResultado", listaHuespedes);
+			req.getRequestDispatcher("/paginas/huespedes/jstlListarHuespedes.jsp").forward(req, resp);
+			// obj = AccionCategorias.getAccion("listar");
+			// dispatcher = req.getRequestDispatcher(obj.AccionCategorias(req, resp));
+			// dispatcher.forward(req, resp);
+			break;
+
+		default:
+			break;
+		}
+
+	}
+}
